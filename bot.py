@@ -1,11 +1,36 @@
-from aiogram.utils import executor
-from main import dp
+import os
+import asyncio
+import logging
+import importlib
 
-from handlers import client, admin, other
+from aiogram import Bot, Dispatcher
 
-client.register_client_handlers(dp)
-admin.register_admin_handlers(dp)
-other.register_other_handlers(dp)
+from config import TOKEN
+
+logging.basicConfig(level=logging.DEBUG)
+bot = Bot(token=TOKEN)
+dp = Dispatcher()
+
+
+def load_handlers() -> None:
+    handlers = [m[:-3] for m in os.listdir("./handlers") if m.endswith(".py")]
+    for handler in handlers:
+        try:
+            module = importlib.import_module(f"handlers.{handler}")
+            dp.include_router(getattr(module, 'router'))
+        except AttributeError:
+            raise AttributeError(f"Module '{handler}' has no attribute 'router'")
+
+
+async def main() -> None:
+    logging.log(
+        level=logging.INFO,
+        msg=f"Bot running as @{(await bot.get_me()).username}"
+    )
+    load_handlers()
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot)
+
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    asyncio.run(main())
