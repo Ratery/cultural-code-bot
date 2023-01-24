@@ -3,16 +3,14 @@ import asyncio
 import logging
 import importlib
 
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
+from aiogram.fsm.storage.memory import MemoryStorage
 
 from config import TOKEN
-
-logging.basicConfig(level=logging.DEBUG)
-bot = Bot(token=TOKEN)
-dp = Dispatcher()
+from middlewares.throttling import ThrottlingMiddleware
 
 
-def load_handlers() -> None:
+def load_handlers(dp: Dispatcher) -> None:
     handlers = [m[:-3] for m in os.listdir("./handlers") if m.endswith(".py")]
     for handler in handlers:
         try:
@@ -23,13 +21,21 @@ def load_handlers() -> None:
 
 
 async def main() -> None:
+    logging.basicConfig(level=logging.DEBUG)
+    bot = Bot(token=TOKEN)
+    dp = Dispatcher(storage=MemoryStorage())
+    dp.message.filter(F.chat.type == "private")
+    dp.message.middleware(ThrottlingMiddleware())
     logging.log(
         level=logging.INFO,
         msg=f"Bot running as @{(await bot.get_me()).username}"
     )
-    load_handlers()
+    load_handlers(dp)
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await bot.session.close()
 
 
 if __name__ == '__main__':
