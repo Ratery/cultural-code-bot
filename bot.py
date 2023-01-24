@@ -6,7 +6,7 @@ import importlib
 from aiogram import Bot, Dispatcher, F
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from config import TOKEN
+from config_reader import config
 from middlewares.throttling import ThrottlingMiddleware
 
 
@@ -22,7 +22,7 @@ def load_handlers(dp: Dispatcher) -> None:
 
 async def main() -> None:
     logging.basicConfig(level=logging.DEBUG)
-    bot = Bot(token=TOKEN)
+    bot = Bot(token=config.bot_token.get_secret_value())
     dp = Dispatcher(storage=MemoryStorage())
     dp.message.filter(F.chat.type == "private")
     dp.message.middleware(ThrottlingMiddleware())
