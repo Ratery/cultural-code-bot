@@ -14,4 +14,4 @@ async def cmd_help(message: types.Message) -> None:
         <b>1. <a href="https://t.me/TheRatery">Ratery</a></b>
         <b>2. <a href="https://t.me/urMister">EL$E</a></b>
         """
-    ), parse_mode="HTML")
+    ))
