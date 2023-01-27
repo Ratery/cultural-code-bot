@@ -1,0 +1,29 @@
+[
+  {
+    "question": "Question 1",
+    "options": [
+      "a",
+      "b",
+      "c"
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "Question 2",
+    "options": [
+      "a",
+      "b",
+      "c"
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "Question 3",
+    "options": [
+      "a",
+      "b",
+      "c"
+    ],
+    "correct_option": 1
+  }
+]
