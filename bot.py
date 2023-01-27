@@ -11,10 +11,10 @@ from middlewares.throttling import ThrottlingMiddleware
 
 
 def load_handlers(dp: Dispatcher) -> None:
-    handlers = [m[:-3] for m in os.listdir("./handlers") if m.endswith(".py")]
+    handlers = [m[:-3] for m in os.listdir('./handlers') if m.endswith('.py')]
     for handler in handlers:
         try:
-            module = importlib.import_module(f"handlers.{handler}")
+            module = importlib.import_module(f'handlers.{handler}')
             dp.include_router(getattr(module, 'router'))
         except AttributeError:
             raise AttributeError(f"Module '{handler}' has no attribute 'router'")
@@ -22,9 +22,9 @@ def load_handlers(dp: Dispatcher) -> None:
 
 async def main() -> None:
     logging.basicConfig(level=logging.DEBUG)
-    bot = Bot(token=config.bot_token.get_secret_value(), parse_mode="HTML")
+    bot = Bot(token=config.bot_token.get_secret_value(), parse_mode='HTML')
     dp = Dispatcher(storage=MemoryStorage())
-    dp.message.filter(F.chat.type == "private")
+    dp.message.filter(F.chat.type == 'private')
     dp.message.middleware(ThrottlingMiddleware())
     logging.log(
         level=logging.INFO,

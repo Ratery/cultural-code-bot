@@ -8,15 +8,16 @@ from aiogram.filters.command import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
+router = Router()
+questions_file_path = 'resources/test_questions.json'
+
 
 class Test(StatesGroup):
     test_in_progress = State()
 
 
-router = Router()
-
 async def send_question(message: types.Message, questions_order: List[int], number: int) -> types.Message:
-    with open('resources/test_questions.json') as f:
+    with open(questions_file_path) as f:
         question = json.load(f)[questions_order[number]]
     options = question['options']
     options_order = random.sample(tuple(range(len(options))), len(options))
@@ -29,9 +30,10 @@ async def send_question(message: types.Message, questions_order: List[int], numb
         is_anonymous=False
     )
 
+
 @router.message(Command("test"))
 async def cmd_test(message: types.Message, state: FSMContext) -> None:
-    with open('resources/test_questions.json') as f:
+    with open(questions_file_path) as f:
         questions_count = len(json.load(f))
     await state.set_state(Test.test_in_progress)
     questions_order = random.sample(tuple(range(questions_count)), questions_count)
@@ -46,6 +48,7 @@ async def cmd_test(message: types.Message, state: FSMContext) -> None:
         questions_order=questions_order,
         correct_answers=0
     )
+
 
 @router.poll_answer(Test.test_in_progress)
 async def handle_poll_answer(answer: types.PollAnswer, state: FSMContext) -> None:
@@ -62,7 +65,8 @@ async def handle_poll_answer(answer: types.PollAnswer, state: FSMContext) -> Non
     if question_number == questions_count:
         await state.clear()
         await message.answer(clean_msg(
-            f"""📙 <b>Тест закончен</b>
+            f"""
+            📙 <b>Тест закончен</b>
             <b>Твой результат:</b> {correct_answers}/{questions_count}
             """
         ))
