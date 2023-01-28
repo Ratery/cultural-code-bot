@@ -39,8 +39,8 @@ async def send_question(message: types.Message, questions_order: List[int], numb
     )
 
 
-@router.message(Command("test"))
-@router.message(Text("📙 Пройти тест"))
+@router.message(Command("test"), State())
+@router.message(Text("📙 Пройти тест"), State())
 async def cmd_test(message: types.Message, state: FSMContext) -> None:
     with open(questions_file_path) as f:
         questions_count = len(json.load(f))
