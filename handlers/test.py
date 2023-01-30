@@ -32,7 +32,7 @@ async def send_question(message: types.Message, questions_order: List[int], numb
         type="quiz",
         question=f"[{number + 1}/{len(questions_order)}]{question['question']}",
         options=[options[i] for i in options_order],
-        correct_option_id=options_order.index(question['correct_option']),
+        correct_option_id=options_order.index(question['correct_option'] - 1),
         explanation=question.get('explanation'),
         is_anonymous=False,
         reply_markup=keyboard
