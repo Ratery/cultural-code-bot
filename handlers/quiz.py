@@ -12,11 +12,11 @@ from aiogram.fsm.state import StatesGroup, State
 from keyboards import main_menu_keyboard
 
 router = Router()
-questions_file_path = 'resources/test_questions.json'
+questions_file_path = 'resources/quiz_questions.json'
 
 
-class Test(StatesGroup):
-    test_in_progress = State()
+class Quiz(StatesGroup):
+    quiz_in_progress = State()
 
 
 async def send_question(message: types.Message, questions_order: List[int], number: int) -> types.Message:
@@ -39,12 +39,12 @@ async def send_question(message: types.Message, questions_order: List[int], numb
     )
 
 
-@router.message(Command("test"), State())
+@router.message(Command("quiz", "test"), State())
 @router.message(Text("📙 Пройти тест"), State())
-async def cmd_test(message: types.Message, state: FSMContext) -> None:
+async def cmd_quiz(message: types.Message, state: FSMContext) -> None:
     with open(questions_file_path) as f:
         questions_count = len(json.load(f))
-    await state.set_state(Test.test_in_progress)
+    await state.set_state(Quiz.quiz_in_progress)
     questions_order = random.sample(tuple(range(questions_count)), questions_count)
     poll = await send_question(
         message=message,
@@ -59,8 +59,8 @@ async def cmd_test(message: types.Message, state: FSMContext) -> None:
     )
 
 
-@router.message(Command("cancel"), Test.test_in_progress)
-@router.message(Text("❌ Прервать тест"), Test.test_in_progress)
+@router.message(Command("cancel"), Quiz.quiz_in_progress)
+@router.message(Text("❌ Прервать тест"), Quiz.quiz_in_progress)
 async def cmd_cancel(message: types.Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     correct_answers: int = state_data['correct_answers']
@@ -77,7 +77,7 @@ async def cmd_cancel(message: types.Message, state: FSMContext) -> None:
     )
 
 
-@router.poll_answer(Test.test_in_progress)
+@router.poll_answer(Quiz.quiz_in_progress)
 async def handle_poll_answer(answer: types.PollAnswer, state: FSMContext) -> None:
     state_data: Dict[str, Any] = await state.get_data()
     message: types.Message = state_data['poll_message']
