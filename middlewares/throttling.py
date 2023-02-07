@@ -6,7 +6,8 @@ from cachetools import TTLCache
 
 
 class ThrottlingMiddleware(BaseMiddleware):
-    cache = TTLCache(maxsize=10000, ttl=3.5)
+    cache = TTLCache(maxsize=10000, ttl=1.5)
+
     async def __call__(
             self,
             handler: Callable[[Message, Dict[str, Any]], Awaitable[Any]],
