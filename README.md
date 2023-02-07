@@ -1,6 +1,6 @@
-[<img src="https://img.shields.io/badge/Telegram-%40CulturalCodeBot-blue?style=flat-square">](https://t.me/CulturalCodeBot)
-<img src="https://img.shields.io/github/license/ratery/cultural-code-bot?style=flat-square">
-<img src="https://img.shields.io/github/last-commit/ratery/cultural-code-bot?style=flat-square">
+[![@CulturalCodeBot](https://img.shields.io/badge/Telegram-%40CulturalCodeBot-blue?style=flat-square)](https://t.me/CulturalCodeBot)
+[![MIT License](https://img.shields.io/github/license/ratery/cultural-code-bot?style=flat-square)](https://github.com/Ratery/cultural-code-bot/blob/main/LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/ratery/cultural-code-bot?style=flat-square)](https://github.com/Ratery/cultural-code-bot/commits)
 
 # Cultural code bot
 A simple Telegram bot for lyceum project.
@@ -38,4 +38,4 @@ $ python bot.py
 **Note:** We do not provide support for self-hosting.
 
 ## License
-MIT — see [LICENSE](https://github.com/Ratery/cultural-code-bot/blob/dev/LICENSE) file for details.
+MIT — see [LICENSE](https://github.com/Ratery/cultural-code-bot/blob/main/LICENSE) file for details.
