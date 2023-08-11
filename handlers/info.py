@@ -2,9 +2,8 @@ import json
 from contextlib import suppress
 from inspect import cleandoc as clean_msg
 
-from aiogram import Router, types
+from aiogram import F, Router, types
 from aiogram.filters.command import Command
-from aiogram.filters.text import Text
 from aiogram.exceptions import TelegramBadRequest
 
 router = Router()
@@ -13,7 +12,7 @@ with open('resources/etiquette_info/themes.json') as f:
 
 
 @router.message(Command("info"))
-@router.message(Text("🎩 Этикет по темам"))
+@router.message(F.text == "🎩 Этикет по темам")
 async def cmd_info(message: types.Message) -> None:
     await message.answer(
         text=clean_msg(
@@ -31,7 +30,7 @@ async def cmd_info(message: types.Message) -> None:
     )
 
 
-@router.callback_query(Text(themes.keys()))
+@router.message(F.text == themes.keys())
 async def handle_callback(callback: types.CallbackQuery) -> None:
     theme = callback.data
     with open(f'resources/etiquette_info/{theme}.html') as f:

@@ -1,14 +1,14 @@
 from inspect import cleandoc as clean_msg
 
+from aiogram import F
 from aiogram import Router, types
 from aiogram.filters.command import Command
-from aiogram.filters.text import Text
 
 router = Router()
 
 
 @router.message(Command("help"))
-@router.message(Text("❔ Помощь"))
+@router.message(F.text == "❔ Помощь")
 async def cmd_help(message: types.Message) -> None:
     await message.answer(clean_msg(
         """

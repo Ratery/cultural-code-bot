@@ -3,9 +3,8 @@ import random
 from typing import List, Dict, Any
 from inspect import cleandoc as clean_msg
 
-from aiogram import Router, types
+from aiogram import F, Router, types
 from aiogram.filters.command import Command
-from aiogram.filters.text import Text
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
@@ -90,7 +89,7 @@ async def send_results(
 
 
 @router.message(Command("quiz", "test"), State())
-@router.message(Text("📙 Пройти тест"), State())
+@router.message(F.text == "📙 Пройти тест", State())
 async def cmd_quiz(message: types.Message, state: FSMContext) -> None:
     with open(questions_file_path) as f:
         questions_count = len(json.load(f))
@@ -110,7 +109,7 @@ async def cmd_quiz(message: types.Message, state: FSMContext) -> None:
 
 
 @router.message(Command("cancel"), Quiz.quiz_in_progress)
-@router.message(Text("❌ Прервать тест"), Quiz.quiz_in_progress)
+@router.message(F.text == "❌ Прервать тест", Quiz.quiz_in_progress)
 async def cmd_cancel(message: types.Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     correct_answers: int = state_data['correct_answers']
