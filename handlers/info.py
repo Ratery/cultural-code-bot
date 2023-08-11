@@ -30,7 +30,7 @@ async def cmd_info(message: types.Message) -> None:
     )
 
 
-@router.message(F.text == themes.keys())
+@router.callback_query(F.data.in_(themes.keys()))
 async def handle_callback(callback: types.CallbackQuery) -> None:
     theme = callback.data
     with open(f'resources/etiquette_info/{theme}.html') as f:
