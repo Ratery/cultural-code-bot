@@ -5,8 +5,7 @@
 # Cultural code bot
 A simple Telegram bot for lyceum project.
 Uses asynchronous [aiogram](https://github.com/aiogram/aiogram) framework. <br>
-This bot is intended to work only in DMs. <br>
-Code here serves for education purposes and for transparency.
+This bot is intended to work only in DMs.
 
 ## Features
 - Easy to use navigation menu with buttons
@@ -19,22 +18,28 @@ Code here serves for education purposes and for transparency.
 
 ## Installation instructions
 **Python 3.8 or higher is required**
-1. Clone the repo:
+
+1. Clone the repository:
+```bash
+$ git clone https://github.com/Ratery/cultural-code-bot
+$ cd cultural-code-bot
 ```
-$ git clone https://github.com/Ratery/cultural-code-bot 
-```
-2. Install all the required packages:
-```
+
+2. Install dependencies:
+```bash
 $ pip install -r requirements.txt
 ```
+
 3. Create and set up the `.env` file:
-```
+```env
 BOT_TOKEN = <YOUR_TOKEN>
 ```
+
 4. Run the bot:
-```
+```bash
 $ python bot.py
 ```
+
 **Note:** We do not provide support for self-hosting.
 
 ## License
