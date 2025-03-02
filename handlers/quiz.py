@@ -137,6 +137,7 @@ async def handle_poll_answer(answer: types.PollAnswer, state: FSMContext) -> Non
         await message.answer("✅ Правильно! Молодец!")
     else:
         await message.answer("❌ Неправильно! В следующий раз всё получится!")
+
     if question_number == questions_count:
         await state.clear()
         await send_results(
